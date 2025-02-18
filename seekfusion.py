@@ -95,3 +95,15 @@ def chunk_documents(raw_documents):
         add_start_index=True
     )
     return text_processor.split_documents(raw_documents)
+
+def index_documents(document_chunks):
+    DOCUMENT_VECTOR_DB.add_documents(document_chunks)
+
+def find_related_documents(query):
+    return DOCUMENT_VECTOR_DB.similarity_search(query)
+
+def generate_answer(user_query, context_documents):
+    context_text = "\n\n".join([doc.page_content for doc in context_documents])
+    conversation_prompt = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+    response_chain = conversation_prompt | LANGUAGE_MODEL
+    return response_chain.invoke({"user_query": user_query, "document_context": context_text})
