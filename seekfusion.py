@@ -7,7 +7,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama.llms import OllamaLLM
 
 st.markdown("""
-
     <style>
     .stApp {
         background-color: #0E1117;
@@ -78,6 +77,7 @@ EMBEDDING_MODEL = OllamaEmbeddings(model="deepseek-r1:1.5b")
 DOCUMENT_VECTOR_DB = InMemoryVectorStore(EMBEDDING_MODEL)
 LANGUAGE_MODEL = OllamaLLM(model="deepseek-r1:1.5b")
 
+
 def save_uploaded_file(uploaded_file):
     file_path = PDF_STORAGE_PATH + uploaded_file.name
     with open(file_path, "wb") as file:
@@ -108,16 +108,17 @@ def generate_answer(user_query, context_documents):
     response_chain = conversation_prompt | LANGUAGE_MODEL
     return response_chain.invoke({"user_query": user_query, "document_context": context_text})
 
+
 # UI Configuration
 
 
-st.title("📘 DocuMind AI")
+st.title("SeekFusion AI")
 st.markdown("### Your Intelligent Document Assistant")
 st.markdown("---")
 
 # File Upload Section
 uploaded_pdf = st.file_uploader(
-    "Upload Research Document (PDF)",
+    "Upload Document (PDF)",
     type="pdf",
     help="Select a PDF document for analysis",
     accept_multiple_files=False
